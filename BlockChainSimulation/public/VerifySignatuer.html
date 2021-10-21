@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/lib/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/lib/bootstrap-horizon.css">
+    <link rel="stylesheet" href="/css/lib/ladda-themeless.min.css">
+    <link rel="stylesheet" href="/css/lib/ie10-viewport-bug-workaround.css">
+    <link rel="stylesheet" href="/css/blockchain.css">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-color: rgba(152, 238, 149, 0.123);
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h3>Signatures and verifyction</h3>
+            </div>
+            <div class="card-body" id="card">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane active" id="sign" role="tabpanel" aria-labelledby="sign-tab">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label" for="data">Message</label>
+                                <textarea class="form-control" id="message" rows="5" aria-label="Message"> </textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="data">Private Key</label>
+                                <input class="form-control" id="privateKey" disabled="">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="data">Public Key</label>
+                                <input class="form-control" id="publicKey">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-block btn-primary" id="signbutton" type="button">Sign</button>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="data">Message Signature</label>
+                                <input class="form-control" id="signature" disabled="">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-block btn-primary" id="verifybutton" type="button">Verify</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="javascrips/clientIndex.js"></script>
+    <script>
+        let key = null;
+
+        const messageTextArea = document.getElementById("message")
+        const privateKeyInput = document.getElementById("privateKey")
+        const publicKeyInput = document.getElementById("publicKey")
+        const signatureInput = document.getElementById("signature")
+        const card = document.getElementById("card")
+        const signBtn = document.getElementById("signbutton")
+        const verifyBtn = document.getElementById("verifybutton")
+        getKeys().then(({
+            private,
+            public
+        }) => {
+            privateKeyInput.value = private
+            publicKeyInput.value = public
+        })
+        signBtn.onclick = e => {
+            makeSingnatuer(messageTextArea.value, privateKeyInput.value).then(signature => {
+                signatureInput.value = signature
+            })
+
+        }
+
+        verifyBtn.onclick = e => {
+            tryVerify(signatureInput.value, messageTextArea.value, publicKeyInput.value).then(isGood => {
+                if (!isGood) {
+                    card.className = "card-body alert-danger"
+                } else {
+                    card.className = "card-body alert-success"
+                }
+            })
+
+        }
+    </script>
+
+</body>
+
+</html>

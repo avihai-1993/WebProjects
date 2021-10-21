@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/lib/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/lib/bootstrap-horizon.css">
+    <link rel="stylesheet" href="/css/lib/ladda-themeless.min.css">
+    <link rel="stylesheet" href="/css/lib/ie10-viewport-bug-workaround.css">
+    <link rel="stylesheet" href="/css/blockchain.css">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-color: rgb(219, 218, 233);
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h1>KEYS</h1>
+
+        <div class="card">
+            <h4 class="card-header">Public / Private Key Pairs</h4>
+            <div class="card-body">
+                <div class="form-horizontal">
+                    <div class="form-group"><label class="control-label" for="data">Private Key</label>
+                        <div class="input-group">
+                            <input class="form-control" id="privateKey" aria-label="Private Key" disabled>
+                            <span class="input-group-btn">
+                            <button class="btn btn-primary " id="randomButton" type="button">Random</button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="data">Public Key</label>
+                        <input class="form-control" id="publicKey" disabled="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="javascrips/clientIndex.js"></script>
+    <script>
+        const privateKeyInput = document.getElementById("privateKey")
+        const publicKeyInput = document.getElementById("publicKey")
+        const randomkeyGenertor = document.getElementById("randomButton")
+        randomkeyGenertor.onclick = e => {
+            getKeys().then(({
+                private,
+                public
+            }) => {
+
+                privateKeyInput.value = private
+                publicKeyInput.value = public
+            })
+        }
+    </script>
+
+</body>
+
+</html>

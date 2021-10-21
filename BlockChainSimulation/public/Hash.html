@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-color: rgb(103, 103, 190);
+    }
+    
+    .form-control {
+        width: 550px;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h1>SHA256 Hash</h1>
+
+        <form>
+
+            <label>Data:</label>
+            <br>
+            <textarea class="form-control" id="data" rows="10" onkeyup="handel()"></textarea>
+            <br>
+            <label>Hash:</label>
+
+            <input class="form-control" id="hash" type="text" disabled=""></div>
+
+    </form>
+
+    </div>
+
+    <script>
+        const ta = document.getElementById("data");
+        const input = document.getElementById("hash");
+
+        function handel() {
+            let jsondata = JSON.stringify({
+                data: ta.value
+            })
+
+            fetch("http://localhost:5002/HashCalc", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: jsondata
+            }).then(res => {
+                res.json().then(data => {
+                    input.value = data.hash
+                }).catch(err => console.log(err))
+            }).catch(err => console.log(err))
+
+        }
+        handel()
+    </script>
+</body>
+
+</html>

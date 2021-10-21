@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/lib/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/lib/bootstrap-horizon.css">
+    <link rel="stylesheet" href="/css/lib/ladda-themeless.min.css">
+    <link rel="stylesheet" href="/css/lib/ie10-viewport-bug-workaround.css">
+    <link rel="stylesheet" href="/css/blockchain.css">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-color: rgba(152, 238, 149, 0.123);
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h3>Transactions</h3>
+            </div>
+            <div class="card-body" id="card">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane active" id="sign" role="tabpanel" aria-labelledby="sign-tab">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label" for="data">Message</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">$</div>
+                                    <input class="form-control" id="signamount" value="20.00">
+                                    <div class="input-group-addon">From:</div>
+                                    <input class="form-control" id="signfrom">
+                                    <div class="input-group-addon">-&gt;</div>
+                                    <input class="form-control" id="signto" value="04cc955bf8e359cc7ebbb66f4c2dc616a93e8ba08e93d27996e20299ba92cba9cbd73c2ff46ed27a3727ba09486ba32b5ac35dd20c0adec020536996ca4d9f3d74">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="data">Private Key</label>
+                                <input class="form-control" id="privateKey" disabled="">
+                            </div>
+
+                            <div class="form-group">
+                                <button class="btn btn-block btn-primary" id="signbutton" type="button">Sign</button>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="data">Message Signature</label>
+                                <input class="form-control" id="signature" disabled="">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-block btn-primary" id="verifybutton" type="button">Verify</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="javascrips/clientIndex.js"></script>
+    <script>
+        let key = null;
+
+        const messageTextArea = document.getElementById("message")
+        const privateKeyInput = document.getElementById("privateKey")
+        const publicKeyInput = document.getElementById("signfrom")
+        const signatureInput = document.getElementById("signature")
+        const card = document.getElementById("card")
+        const signBtn = document.getElementById("signbutton")
+        const verifyBtn = document.getElementById("verifybutton")
+
+        getKeys().then(({
+            private,
+            public
+        }) => {
+            privateKeyInput.value = private
+            publicKeyInput.value = public
+        })
+
+        function getDatavalue() {
+
+            let money = document.getElementById("signamount").value
+            let from = publicKeyInput.value
+            let to = document.getElementById("signto").value
+            return money + from + to;
+        }
+        signBtn.onclick = e => {
+            makeSingnatuer(getDatavalue(), privateKeyInput.value).then(signature => {
+                signatureInput.value = signature
+            })
+
+        }
+
+        verifyBtn.onclick = e => {
+            tryVerify(signatureInput.value, getDatavalue(), publicKeyInput.value).then(isGood => {
+                if (!isGood) {
+                    card.className = "card-body alert-danger"
+                } else {
+                    card.className = "card-body alert-success"
+                }
+            })
+
+        }
+    </script>
+
+</body>
+
+</html>

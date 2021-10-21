@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/lib/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/lib/bootstrap-horizon.css">
+    <link rel="stylesheet" href="/css/lib/ladda-themeless.min.css">
+    <link rel="stylesheet" href="/css/lib/ie10-viewport-bug-workaround.css">
+    <link rel="stylesheet" href="/css/blockchain.css">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-color: rgb(207, 245, 230);
+    }
+</style>
+
+<body>
+    <h1>BlockChain</h1>
+    <div id="root">
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js" integrity="sha512-szJ5FSo9hEmXXe7b5AUVtn/WnL8a5VofnFeYC2i2z03uS2LhAch7ewNLbl5flsEmTTimMN0enBZg/3sQ+YOSzQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="javascrips/block.js"></script>
+    <script src="javascrips/clientIndex.js"></script>
+    <script>
+        const bcRoot = document.getElementById("root");
+        const arr = []
+
+
+
+        const chainEventHandler = (action, block) => {
+            switch (action) {
+                case 1:
+                    //when a spicifec block change
+                    for (let i = block.index; i < arr.length; i++) {
+                        let h = sha256(`${arr[i].block.index}${arr[i].block.nonce}${arr[i].block.data}${arr[i].block.previousHash}`);
+                        arr[i].block.hash = h
+                        if (i + 1 < arr.length) {
+                            arr[i + 1].block.previousHash = h
+                        }
+                        arr[i].CBV.className = "well well-error";
+                        arr[i].render()
+                    }
+
+
+
+
+
+                    break;
+                case 2:
+                    mineVer2(block, (data) => {
+                        console.log(data);
+                        arr[block.index].block.hash = data.hash;
+                        arr[block.index].block.nonce = data.nonce;
+                        if (block.index + 1 < arr.length) {
+                            arr[block.index + 1].block.previousHash = data.hash;
+                            chainEventHandler(1, arr[block.index + 1].block)
+                        }
+                        arr[block.index].render();
+                    })
+
+
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+        function makeBlockchain(url, arrayForChain, eventHandlerForChain, cont) {
+            while (arrayForChain.length != 0) {
+                arrayForChain.pop()
+            }
+            while (cont.firstChild) {
+                cont.removeChild(cont.firstChild)
+            }
+            fetch(url).then(res => {
+                res.json().then(data => {
+                    data.chain.forEach(element => {
+                        arrayForChain.push(new ChainBlockView(element, eventHandlerForChain, cont))
+                    });
+                }).catch(err => console.log(err))
+            }).catch(err => console.log(err))
+        }
+        makeBlockchain("http://localhost:5002/getChainSimoleter", arr, chainEventHandler, bcRoot)
+    </script>
+
+</body>
+
+</html>

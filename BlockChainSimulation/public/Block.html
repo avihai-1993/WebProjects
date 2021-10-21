@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/lib/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/lib/bootstrap-horizon.css">
+    <link rel="stylesheet" href="/css/lib/ladda-themeless.min.css">
+    <link rel="stylesheet" href="/css/lib/ie10-viewport-bug-workaround.css">
+    <link rel="stylesheet" href="/css/blockchain.css">
+
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-color: rgb(122, 231, 107);
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h1>Block</h1>
+        <div class="well well-success" id="block1chain1well">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="block1chain1number">Block:</label>
+                    <div class="col-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon">#</span>
+                            <input class="form-control" id="block1chain1number" type="number" onchange="someThingChange()" onkeyup="someThingChange()">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="block1chain1nonce">Nonce:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="block1chain1nonce" type="text" onkeyup="someThingChange();">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="block1chain1data">Data:</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="block1chain1data" rows="10" onkeyup="someThingChange();" spellcheck="false"></textarea>
+                    </div>
+                </div>
+                <div class="form-group" id="state">
+                    <label class="col-sm-2 control-label" for="block1chain1hash">Hash:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="block1chain1hash" type="text" disabled="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <i class="icon-spinner icon-spin icon-large"></i>
+                    </div>
+                    <div class="col-sm-10">
+                        <button class="btn btn-primary ladda-button" id="block1chain1mineButton" data-style="expand-right" onclick="mine()">
+                            <span class="ladda-label">Mine</span>
+                            <span class="ladda-spinner"></span>
+                            <span class="ladda-spinner"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+</div>
+    </div>
+
+
+    <script>
+        const URL = "http://localhost:5002/"
+        const dataTA = document.getElementById("block1chain1data")
+        const nonce = document.getElementById("block1chain1nonce")
+        nonce.value = "10785"
+        const blockNumber = document.getElementById("block1chain1number")
+        blockNumber.value = 1
+        const cont = document.getElementById("block1chain1well")
+        const input = document.getElementById("block1chain1hash")
+
+
+        function handel() {
+            let o = dataTA.value + nonce.value + blockNumber.value
+            let jsondata = JSON.stringify({
+                data: o
+            })
+
+            fetch(`${URL}HashCalc`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: jsondata
+            }).then(res => {
+                res.json().then(data => {
+                    input.value = data.hash
+                }).catch(err => console.log(err))
+            }).catch(err => console.log(err))
+
+        }
+
+        function someThingChange() {
+            cont.className = "well well-error"
+            handel()
+                //mine()
+        }
+
+        function mine(e) {
+
+            let o = {
+                index: blockNumber.value,
+                nonce: nonce.value,
+                data: dataTA.value,
+                timestamp: Date.now()
+            }
+            let jsondata = JSON.stringify(o)
+
+            fetch(`${URL}mine`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: jsondata
+            }).then(res => {
+                res.json().then(data => {
+                    console.log(data);
+                    input.value = data.hash
+                    blockNumber.value = data.index
+                    nonce.value = data.nonce
+                    dataTA.value = data.data
+                    cont.className = "well well-success"
+                }).catch(err => console.log(err))
+            }).catch(err => console.log(err))
+
+
+        }
+
+        mine()
+    </script>
+
+
+</body>
+
+</html>
