@@ -1,0 +1,19 @@
+.RNavBar{
+  display: flex;
+  background-color: rgb(151, 143, 151);
+  padding-left: 7px;
+  height: fit-content;
+
+  
+}
+   
+.routeItem{
+  margin-right: 12px;
+  
+}
+.routeItem:hover{
+  background-color: rgb(224, 203, 224);
+}
+.routeItem:active{
+  background-color: rgb(202, 143, 202);
+}
