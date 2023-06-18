@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin-left: 10px;
+    }
+
+    #container,
+    body {
+        display: block;
+        width: 700px;
+        height: 1100px;
+    }
+
+    .streetlight {
+        display: flex;
+        margin: 20px;
+        position: absolute;
+        cursor: move;
+    }
+
+    .rectangle {
+        width: 20px;
+        height: 75px;
+        background-color: gray;
+        border-radius: 5px;
+    }
+
+    .circle {
+        width: 10px;
+        height: 10px;
+        background-color: white;
+        border-radius: 50%;
+        margin: 10px auto;
+    }
+</style>
+
+<body>
+
+    <!--<div id="container" ></div>-->
+    <!--<p id="log"></p>-->
+    <script src="streetligth.js"></script>
+    <script src="streetligthManager.js"></script>
+    <script>
+
+        function log(anything) {
+            document.getElementById('log').innerHTML += anything + '<br>'
+            console.log(anything)
+        }
+
+        document.body.addEventListener("dragover", function (event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = "move";
+        });
+
+        document.body.addEventListener("drop", function (event) {
+            event.preventDefault();
+            var targetElement = document.getElementById(event.dataTransfer.getData("text"));
+            var initialX = parseInt(event.dataTransfer.getData("initialX"));
+            var initialY = parseInt(event.dataTransfer.getData("initialY"));
+            var currentX = event.clientX;
+            var currentY = event.clientY;
+            var deltaX = currentX - initialX;
+            var deltaY = currentY - initialY;
+            targetElement.style.left = (targetElement.offsetLeft + deltaX) + "px";
+            targetElement.style.top = (targetElement.offsetTop + deltaY) + "px";
+        });
+
+        const streetlights = [new Streetlight(document.body), new Streetlight(document.body), new Streetlight(document.body), new Streetlight(document.body)]
+        const plan = {
+            states: [
+                { ligthsConfig: [0, 2, 0, 2], timebetween_RY_seconds: 6.5, timebetween_LC_Iseconds: 8 }
+                , { ligthsConfig: [2, 0, 2, 0], timebetween_RY_seconds: 6.5, timebetween_LC_Iseconds: 8 }]
+
+
+        }
+        const streetlightsManager = new StreetLightManager(streetlights, plan)
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
