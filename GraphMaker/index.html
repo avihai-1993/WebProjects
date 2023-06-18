@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Interactive Graph Creator</title>
+	<link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+	<main>
+		<section>
+			<h1 class="h1_title">Graph Maker</h1>
+			<!-- Add tools for creating a graph with nodes and edges -->
+			<button id="add-node" onclick="addNode()">Add Node</button>
+			<button id="add-edge" onclick="addEdge()">Add Edge</button>
+			<button id="delete" onclick="deleteItem()">Delete Element</button>
+			<!-- Add a canvas or container to display the graph -->
+			<!-- Add tools for styling the graph -->
+			<label for="color">Color:</label>
+			<input type="color"  id="color" value="#F475A3">
+			<label for="size">Size:</label>
+			<input type="number" id="size" value="30">
+			<!-- Add tools for saving and loading the graph -->
+			<!-- <button id="save">Save Graph</button> -->
+			<!-- <button id="load">Load Graph</button> -->
+			<label for="label">ID:</label>
+			<input type="text" id="label-node-id">
+			<label for="shape">Shape:</label>
+			<select id="shape-select">
+				<option value="circle">Circle</option>
+				<option value="square">Square</option> 
+				<!--<option value="triangle">Triangle</option> -->
+			</select>
+
+             <br>
+			<label for="label">Edge:</label>
+			<input type="text" width="10px" id="edge-from-node-id">
+			<bold>--- ></bold>
+			<input type="text" width="10px" id="edge-to-node-id">
+			|
+			<label >selected item id:</label>
+			<bold id = "selected_shape_id">No Item selected</bold>
+
+			<div id="canvas">
+				<canvas id="myCanvas" width="1400" height="620"></canvas>
+			</div>
+
+		</section>
+	</main>
+
+	<script>
+		// Add JavaScript code for the UI interactions
+	</script>
+	<script src="Graph.js"></script>
+	<script src="shapes.js"></script>
+	<script src="darw-ui.js"></script>
+	<script src="controlPaneleFunctions.js"></script>
+	<script src="index.js"></script>
+</body>
+
+</html>
