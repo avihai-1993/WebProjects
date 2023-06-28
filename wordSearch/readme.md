@@ -5,4 +5,4 @@ find if exists a sequentially adjacent (horizontal and vertical only ) cells con
 
 
 
-!(workingExampleOffindingASeq.png)
+![](workingExampleOffindingASeq.png)
