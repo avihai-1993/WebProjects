@@ -5,6 +5,8 @@ find if exists a sequentially adjacent (horizontal and vertical only ) cells con
 
 This task is really good because it combines recursion, use and synchronization of Internet technologies, use of data structures, separation between logic and display
 
+if it will find the sequence it  will paint it in green if not it will do nothing 
+
 ##### working example of finding a sequence 
 
 ![](workingExampleOffindingASeq.png)
