@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playground</title>
+</head>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+#root {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+caption {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+#control-panel {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: auto;
+}
+
+#control-panel label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+#control-panel input {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#control-panel button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#control-panel button:hover {
+    background-color: #45a049;
+}
+
+#playerList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#playerList li {
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+
+</style>
+<body>
+  
+     <div id="control-panel">
+      <h2>Control Panel</h2>
+      <label for="playerName">Player Name:</label>
+      <input type="text" id="playerName">
+      <label for="overallRating">Overall Rating:</label>
+      <input type="number" id="overallRating" min="1" max="5" value="1">
+      <button id="addPlayerButton">Add Player</button>
+      <h3>Current Players</h3>
+      <ul id="playerList"></ul>
+      <h3>teams config</h3>
+      <label for="numberOfTeams">number of teams:</label>
+      <input type="number" id="numberOfTeams" min="1" max="3" value="3">
+      <label for="numberOfPlayersInteam">players in a team:</label>
+      <input type="number" id="numberOfPlayersInteam" min="1" max="5" value="5">
+      <button id="organizeButton">Organize Teams</button>
+  </div>
+    <div id="root"></div>
+    <script src="index5.js"></script>
+</body>
+</html>
